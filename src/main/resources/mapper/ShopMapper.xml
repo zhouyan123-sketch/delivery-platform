@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dfrz.mapper.ShopMapper">
+
+    <select id="login" resultType="dfrz.domain.Shop">
+        SELECT id,login_name,login_password,shop_name,shop_content,address,contact_name,concat_tel,opening_hours,`status` FROM shop
+        WHERE login_name=#{loginName} AND login_password=#{loginPassword}
+    </select>
+    <select id="queryShop" resultType="dfrz.domain.Shop">
+        SELECT id,login_name,login_password,shop_name,shop_content,address,contact_name,concat_tel,opening_hours,`status`,create_date
+        FROM shop WHERE SUBSTRING(opening_hours,1,5) &lt; #{time} AND SUBSTRING(opening_hours,7,5) &gt; #{time} AND `status` = 1
+    </select>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dfrz.mapper.DishMapper">
+    <insert id="addDish">
+        INSERT INTO dish(id,`name`,description,price,shop_id,`status`) VALUES
+            (#{id},#{name},#{description},#{price},#{shopId},#{status})
+    </insert>
+    <update id="updateStatus">
+        UPDATE dish set `status`=#{i} where id=#{id}
+    </update>
+    <update id="updateById">
+        UPDATE `dish` SET `name` =#{name}, `description` = #{description}, `price` = #{price}, `shop_id` = #{shopId}, `status` = #{status} WHERE `id` = #{id}
+    </update>
+    <delete id="remove">
+        delete from dish where id=#{id}
+    </delete>
+
+    <select id="search" resultType="java.lang.Boolean">
+        SELECT EXISTS(
+                   select id from dish where shop_id=#{shopId} and name=#{name}
+        ) as hasDish
+
+    </select>
+    <select id="queryDishs" resultType="dfrz.domain.Dish">
+            select id,`name`,description,price,shop_id,`status`
+            FROM dish
+            where shop_id=#{id}
+            <if test="role==2">
+                 and `status`=1
+            </if>
+    </select>
+    <select id="queryById" resultType="dfrz.domain.Dish">
+        SELECT id,`name`,description,price,shop_id,`status`
+        FROM dish
+        where id=#{id}
+    </select>
+    <select id="queryPricebyId" resultType="java.lang.Double">
+        SELECT price
+        FROM dish
+        where id=#{dishId}
+    </select>
+</mapper>

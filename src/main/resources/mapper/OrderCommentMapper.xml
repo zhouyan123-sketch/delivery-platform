@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dfrz.mapper.OrderCommentMapper">
+
+    <insert id="addComment">
+        INSERT INTO `orde_comment` (`id`, `user_id`, `order_id`, `content`, `create_time`)
+        VALUES
+         (#{id}, #{userId}, #{orderId}, #{content}, #{createTime})
+    </insert>
+</mapper>

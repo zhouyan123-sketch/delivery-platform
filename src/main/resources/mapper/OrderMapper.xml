@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dfrz.mapper.OrderMapper">
+    <insert id="addOrder">
+        INSERT INTO `deliveryplatform`.`order` (`userid`, `create_time`, `link_name`, `link_tel`, `link_address`, `status`, `shop_id`)
+        VALUES (#{userid}, #{createTime},#{linkName}, #{linkTel}, #{linkAddress}, #{status}, #{shopId})
+    </insert>
+    <update id="updateOrderStatus">
+        update `order` set `status`=#{status} where id=#{orderId}
+    </update>
+    <delete id="removeOrder">
+        DELETE FROM `order` WHERE id=#{orderId}
+    </delete>
+
+    <select id="queryId" resultType="java.lang.Integer">
+        select max(id) from `order`
+    </select>
+    <select id="queryOrdersById" resultType="dfrz.domain.Orders">
+        SELECT id,link_name,link_address,link_tel,create_time,`status`
+        from `order` WHERE shop_id=#{id}
+    </select>
+    <select id="queryDishByOrder" resultType="dfrz.DTO.DishDTO">
+        SELECT d.name,oi.buy_num
+        FROM order_item oi,dish d
+        where oi.dish_id=d.id and oi.orderid=#{orderId}
+    </select>
+    <select id="queryOrderByUserId" resultType="dfrz.DTO.OrderDTO">
+        SELECT o.id,o.create_time,s.shop_name,sum(oi.buy_num*oi.price) price
+        FROM shop s,`order` o,order_item oi
+        WHERE s.id=o.shop_id AND o.id=oi.orderid AND o.`status`=#{status} AND o.userid=#{id} GROUP BY o.id,o.create_time,s.shop_name
+    </select>
+</mapper>

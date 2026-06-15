@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dfrz.mapper.OrderItemMapper">
+    <insert id="addOrderItem">
+        INSERT INTO `deliveryplatform`.`order_item` ( `orderid`, `dish_id`, `buy_num`, `price`,shopId)
+        VALUES ( #{orderId}, #{dishId}, #{buyNum}, #{price},#{shopId})
+    </insert>
+    <delete id="removeByOrderId">
+        DELETE FROM  order_item WHERE orderid=#{orderId}
+    </delete>
+
+    <select id="search" resultType="java.lang.Boolean">
+        select exists(
+            SELECT id,orderid,dish_id,buy_num,price
+            FROM order_item
+            WHERE orderid=#{id}
+        )
+    </select>
+    <select id="queryPrice" resultType="java.lang.Double">
+        SELECT sum(price*buy_num) FROM order_item where orderid=#{orderId}
+    </select>
+</mapper>

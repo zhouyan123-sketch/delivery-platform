@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dfrz.mapper.UserMapper">
+    <update id="updateMoney">
+        update `user` set vip_money = vip_money-#{sumPrice} where id=#{userid}
+    </update>
+
+    <select id="login" resultType="dfrz.domain.User">
+        SELECT id, login_name, login_password, realname, create_time, `status`, vip_money
+        FROM user
+        where login_name=#{loginName} and login_password=#{loginPassword}
+    </select>
+    <select id="queryVipMoneyById" resultType="java.lang.Double">
+        SELECT vip_money from user where id=#{userid}
+    </select>
+</mapper>
